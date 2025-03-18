@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -33,7 +33,7 @@
             </main>
         </div>
     </body>
-</html> --}}
+</html>
 
 
 
@@ -82,7 +82,7 @@
 
 
 
-<!doctype html>
+{{-- <!doctype html>
 <html lang="en">
   <!--begin::Head-->
   <head>
@@ -429,5 +429,5 @@
     <!--end::Script-->
   </body>
   <!--end::Body-->
-</html>
+</html> --}}
 

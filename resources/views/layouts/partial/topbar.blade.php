@@ -183,8 +183,20 @@
             <!--end::Menu Body-->
             <!--begin::Menu Footer-->
             <li class="user-footer">
-              <a href="#" class="btn btn-default btn-flat">Profile</a>
-              <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+              <a href="{{ route('profile.edit') }}" class="btn btn-default btn-flat">Profile</a>
+              {{-- logout section --}}
+        <div class="btn btn-default btn-flat float-end">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <x-dropdown-link :href="route('logout')"
+                    onclick="event.preventDefault();
+                                this.closest('form').submit();">
+                {{ __('Log Out') }}
+            </x-dropdown-link>
+        </form>
+        </div>
+              {{-- <a href="#" class="btn btn-default btn-flat float-end">Sign out</a> --}}
             </li>
             <!--end::Menu Footer-->
           </ul>

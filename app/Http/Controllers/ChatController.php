@@ -208,4 +208,30 @@ class ChatController extends Controller
         ]);
     }
 
+
+
+
+
+
+
+
+    // search user
+
+    public function searchUsers(Request $request)
+    {
+        $query = $request->input('query');
+
+        if ($query) {
+            $users = User::where('name', 'LIKE', "%{$query}%")
+                        ->orWhere('email', 'LIKE', "%{$query}%")
+                        ->limit(10)
+                        ->get();
+        } else {
+            $users = [];
+        }
+
+        return response()->json($users);
+    }
+
+
 }

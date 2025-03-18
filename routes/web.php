@@ -17,6 +17,8 @@ Route::middleware(['auth'])->group(function () {
     });
     // Route::post('/chat/{user}', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::post('/chat/{user}', [ChatController::class, 'send'])->name('chat.send');
+
+    Route::get('/search-users', [ChatController::class, 'searchUsers'])->name('search.users');
 });
 
 Route::get('/dashboard', function () {

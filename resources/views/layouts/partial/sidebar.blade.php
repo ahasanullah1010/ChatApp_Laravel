@@ -1,4 +1,4 @@
-<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+<aside class="app-sidebar  shadow" >
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">
       <!--begin::Brand Link-->
@@ -35,6 +35,131 @@
                 
               </p>
             </a>
+
+           
+            <div class="container">
+                <h3>Search Users</h3>
+            
+                <div class="search-container">
+                    <input type="text" id="search-box" placeholder="Search by name or email..." autocomplete="off">
+                    <div id="search-results" class="hidden"></div>
+                </div>
+            </div>
+            
+            <style>
+                .search-container {
+                    position: relative;
+                    width: 100%;
+                    max-width: 400px; /* Adjust max width as needed */
+                    margin: 0 auto; /* Centering the search bar */
+                }
+
+                #search-box {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    font-size: 16px;
+                }
+
+                #search-results {
+                    position: absolute;
+                    top: 100%;
+                    width: 100%;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                    display: none;
+                    z-index: 1000;
+                }
+
+                .search-item {
+                    padding: 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    cursor: pointer;
+                }
+
+                .search-item img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+
+                .search-item:hover {
+                    background: #f1f1f1;
+                }
+
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    .search-container {
+                        max-width: 100%;
+                    }
+
+                    #search-box {
+                        font-size: 14px;
+                        padding: 8px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    #search-box {
+                        font-size: 12px;
+                        padding: 6px;
+                    }
+                }
+
+            </style>
+            
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('#search-box').on('input', function() {
+                        let query = $(this).val();
+                        
+                        if (query.length > 0) {
+                            $.ajax({
+                                url: "{{ route('search.users') }}",
+                                type: "GET",
+                                data: { query: query },
+                                success: function(response) {
+                                    let resultBox = $('#search-results');
+                                    resultBox.empty();
+                                    if (response.length > 0) {
+                                        response.forEach(user => {
+                                            let userItem = `
+                                              <a href="/chat/view/${user.id}">
+                                                <div class="search-item">
+                                                    <img src="${user.profile_picture ?? 'https://via.placeholder.com/40'}" alt="User">
+                                                    <span>${user.name}</span>
+                                                </div>
+                                              </a>`;
+                                            resultBox.append(userItem);
+                                        });
+                                        resultBox.show();
+                                    } else {
+                                        resultBox.hide();
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#search-results').hide();
+                        }
+                    });
+            
+                    $(document).click(function(e) {
+                        if (!$(e.target).closest('.search-container').length) {
+                            $('#search-results').hide();
+                        }
+                    });
+                });
+            </script>
+            
+            
+
+
           </li>
 
 
@@ -196,7 +321,7 @@
         }
 
         fetchConnections(); // Initial fetch
-        setInterval(fetchConnections, 5000); // Refresh connections every 5 seconds
+       // setInterval(fetchConnections, 5000); // Refresh connections every 5 seconds
     });
 </script>
 
