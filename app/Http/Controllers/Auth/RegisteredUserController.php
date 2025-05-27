@@ -35,10 +35,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $profilePicturePath = null;
+        if (request()->hasFile('profile_picture')) {
+            $profilePicturePath = request()->file('profile_picture')->store('profile_pictures', 'public');
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_picture' => $profilePicturePath,
         ]);
 
         event(new Registered($user));

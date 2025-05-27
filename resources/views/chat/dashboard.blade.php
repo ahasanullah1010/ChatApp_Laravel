@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container">
-    <h3>Chat with <span id="receiverName"></span></h3>
+    
+    <div id="receiverInfo">
+        {{-- <img id="receiverImg" src="" width="50px" height="50px" alt="User Image" class="user-image rounded-circle shadow">
+            <h2 id="receiverName" class="d-none d-md-inline ml-4"></h2> --}}
+    </div>
 
     <div class="chat-box" id="chatBox"></div> <!-- মেসেজ এখানে লোড হবে -->
 
@@ -52,11 +56,40 @@
     }
 </style>
 
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function () {
         let receiverId = "{{ $receiver_id }}"; // Laravel থেকে Receiver ID
+
+        // load receiver image and name
+        // function loadReceiverData() {
+        //     $.ajax({
+        //         url: "/chat/" + receiverId, // API কল করা
+        //         type: "GET",
+        //         dataType: "json",
+        //         success: function (response) {
+        //             if (response.status === "success") {
+                        
+        //                 let receiverBox = $('#receiverInfo');
+        //                 let receiverInfo = `
+        //                 <img id="receiverImg" src="/storage/${response.receiver.profile_picture}" width="50px" height="50px" alt="User Image" class="user-image rounded-circle shadow">
+        //                 <h2 id="receiverName" class="d-none d-md-inline ml-4">${response.receiver.name}</h2>`;
+        //                 // $("#receiverImg").src = "/storage/${response.receiver.profile_picture}";
+        //                 // $("#receiverName").text(response.receiver.name); // রিসিভারের নাম আপডেট করা
+        //                 receiverBox.append(receiverInfo);
+  
+        //             }
+        //         },
+        //         error: function (xhr) {
+        //             console.log("Error fetching data:", xhr);
+        //         }
+        //     });
+        // }
+
+        // function loadReceiverData();
 
         function fetchData() {
             $.ajax({
@@ -67,7 +100,14 @@
                     if (response.status === "success") {
                         let chatBox = $("#chatBox");
                         chatBox.html(""); // পুরানো মেসেজ মুছে ফেলা
-                        $("#receiverName").text(response.receiver.name); // রিসিভারের নাম আপডেট করা
+
+                        let receiverBox = $('#receiverInfo');
+                        let receiverInfo = `
+                        <img id="receiverImg" src="/storage/${response.receiver.profile_picture}" width="50px" height="50px" alt="User Image" class="user-image rounded-circle shadow">
+                        <h2 id="receiverName" class="d-none d-md-inline ml-4">${response.receiver.name}</h2>`;
+                        // $("#receiverImg").src = "/storage/${response.receiver.profile_picture}";
+                        // $("#receiverName").text(response.receiver.name); // রিসিভারের নাম আপডেট করা
+                        receiverBox.html(receiverInfo);
 
                         // মেসেজ লোড করা
                         response.messages.forEach(function (message) {
@@ -94,7 +134,7 @@
         }
 
         fetchData(); // প্রথমবার API কল করা
-        setInterval(fetchData, 5000); // প্রতি 5 সেকেন্ড পর পর API কল করা
+        // setInterval(fetchData, 5000); // প্রতি 5 সেকেন্ড পর পর API কল করা
 
         // AJAX দিয়ে মেসেজ পাঠানো
         $("#messageForm").submit(function (e) {
